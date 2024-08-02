@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang=en-CA>
+	<meta charset=utf-8>
+	<title>littlebook</title>
+	<style>
+		html {
+			background: #282a36;
+			color: white;
+			height: 100%;
+			overscroll-behavior: none;
+		}
+		body {
+			display: flex;
+			flex-direction: column;
+			min-height: 100%;
+			margin: 0;
+		}
+		#txt {
+			display: flex;
+			flex-direction: column;
+			flex-grow: 1;
+			font-size: 1.2em;
+		}
+		.cm-cursor-primary {
+			border-left: 2px solid #33ffee!important;
+		}
+		.cm-editor {
+  			flex: 1;
+		}
+	</style>
+	<link rel=icon type=image/svg+xml href=/favicon.ico>
+	<meta name=viewport content="width=device-width,initial-scale=1.0">
+	<body>
+		<article id=txt></article>
+		<script type=module src=/src/main.ts></script>
+	</body>
+</html>
