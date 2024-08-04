@@ -15,9 +15,12 @@ import {IndexedDBStorageAdapter} from "@automerge/automerge-repo-storage-indexed
 import {Repo} from "@automerge/automerge-repo"
 
 let idb = new IndexedDBStorageAdapter("lb-docs")
-let socky = new BrowserWebSocketClientAdapter(`wss://star.littlebook.app`)
+// let socky = new BrowserWebSocketClientAdapter(`wss://star.littlebook.app`)
+let socky2 = new BrowserWebSocketClientAdapter(
+	`wss://autosync-rdd6.onrender.com`
+)
 let tabby = new BroadcastChannelNetworkAdapter()
-let network = [socky, tabby]
+let network = [socky2, tabby]
 let storage = idb
 let repo = new Repo({
 	network,
@@ -59,6 +62,8 @@ function setupView() {
 
 let view = setupView()
 
+view.focus()
+
 window.addEventListener("hashchange", async () => {
 	docHandle = await followHash()
 	view.destroy()
@@ -66,3 +71,5 @@ window.addEventListener("hashchange", async () => {
 })
 
 window.repo = repo
+
+window.addEventListener("click", () => view.focus())
