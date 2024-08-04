@@ -6,7 +6,7 @@ export const config: UserConfig = {
 	plugins: [
 		wasm(),
 		pwa({
-			registerType: "prompt",
+			registerType: "autoUpdate",
 			injectRegister: false,
 			pwaAssets: {
 				disabled: false,
