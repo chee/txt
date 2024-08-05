@@ -197,6 +197,7 @@ function setupView() {
 	return new EditorView({
 		doc: docHandle.docSync()!.text,
 		extensions: [
+			EditorView.lineWrapping,
 			EditorView.updateListener.of(ephemera),
 			cursors(),
 			minimalSetup,
