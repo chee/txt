@@ -175,10 +175,7 @@ darkmatch.addEventListener("change", onschemechange)
 
 function title(update: ViewUpdate) {
 	if (update.docChanged) {
-		let headline = update.view.state.doc.line(1).text.replace(/^#+ /, "")
-		window.top &&
-			(window.top.document.head.querySelector("title")!.textContent =
-				headline + " | txt")
+		setHeadline(update.view.state)
 	}
 }
 
@@ -291,10 +288,21 @@ function setupView() {
 }
 
 let view = setupView()
-let headline = view.state.doc.line(1).text.replace(/^#+ /, "")
-window.top &&
-	(window.top.document.head.querySelector("title")!.textContent =
-		headline + " | txt")
+
+function setHeadline(state: EditorState) {
+	let headline = state.doc.line(1).text.replace(/^#+ ?/, "")
+	if (!window.top) {
+		return
+	}
+	if (headline) {
+		window.top.document.head.querySelector("title")!.textContent =
+			headline + " | txt"
+	} else {
+		window.top.document.head.querySelector("title")!.textContent = "txt"
+	}
+}
+
+setHeadline(view.state)
 
 hash.sub(() => {
 	view.destroy()
