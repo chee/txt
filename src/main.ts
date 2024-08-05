@@ -127,6 +127,9 @@ function cursors() {
 			destroy() {
 				return
 			},
+			compare(w) {
+				return w == this
+			},
 		},
 	})
 	friendPointMark.point = true
