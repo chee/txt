@@ -162,7 +162,6 @@ function cursors() {
 			})
 
 			for (let [id, range] of Object.entries(friends)) {
-				console.log(Date.now() - range.time > 2000, Date.now(), range.time)
 				if (Date.now() - range.time > 2000) {
 					delete friends[id]
 					continue
