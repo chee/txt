@@ -17,6 +17,6 @@
 		"target": "ESNext",
 		"baseUrl": "src"
 	},
-	"include": ["src", "global.d.ts", "html/src"],
+	"include": ["src", "global.d.ts", "html/src", "preview/src"],
 	"references": [{"path": "./tsconfig.node.json"}]
 }

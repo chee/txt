@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+	<meta charset="utf-8" />
+	<title>txt + html</title>
+	<link rel=icon type=image/svg+xml href=/favicon-html.svg>
+	<style>
+		html {
+			height: 100%;
+			overscroll-behavior: none;
+		}
+		body {
+			display: flex;
+			flex-direction: row;
+			min-height: 100%;
+			margin: 0;
+		}
+	</style>
+
+	<script>
+		function setsrc(/** @type {HTMLFrameElement[]} */ frames) {
+			frames.forEach(f => {
+				f.src = f.dataset.src + location.hash
+			})
+		}
+		window.addEventListener("load", () => {
+			let frames = document.querySelectorAll("frame")
+			setsrc(frames)
+			window.addEventListener("hashchange", () => setsrc(frames))
+		})
+	</script>
+	<frameset cols="*,*">
+		<frame src="/" data-src="/"></frame>
+		<frame src="/html/" data-src="/html/"></frame>
+	</frameset>
+</html>

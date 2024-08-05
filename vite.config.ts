@@ -47,6 +47,7 @@ export const config: UserConfig = {
 			input: {
 				main: path.resolve(import.meta.dirname, "index.html"),
 				html: path.resolve(import.meta.dirname, "html/index.html"),
+				preview: path.resolve(import.meta.dirname, "preview/index.html"),
 			},
 		},
 	},

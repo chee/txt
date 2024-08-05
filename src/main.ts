@@ -123,7 +123,6 @@ function cursors() {
 		},
 
 		update(marks, tr) {
-			marks.map(tr.changes)
 			marks = marks.update({
 				filter() {
 					return false
