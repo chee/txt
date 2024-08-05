@@ -13,11 +13,17 @@ import {BrowserWebSocketClientAdapter} from "@automerge/automerge-repo-network-w
 import {BroadcastChannelNetworkAdapter} from "@automerge/automerge-repo-network-broadcastchannel"
 import {IndexedDBStorageAdapter} from "@automerge/automerge-repo-storage-indexeddb"
 import {Repo} from "@automerge/automerge-repo"
-import {
-	LanguageDescription,
-	indentUnit,
-	type LanguageSupport,
-} from "@codemirror/language"
+import {LanguageDescription} from "@codemirror/language"
+
+let txt = document.getElementById("txt")!
+
+let featureflags = new URLSearchParams(location.search.slice(1))
+for (let [flag, value] of featureflags.entries()) {
+	document.documentElement.setAttribute(flag, value)
+}
+if (featureflags.has("rtl")) {
+	txt.style.direction = "rtl"
+}
 
 let idb = new IndexedDBStorageAdapter("lb-docs")
 let socky = new BrowserWebSocketClientAdapter(
@@ -45,8 +51,6 @@ async function followHash() {
 }
 
 let docHandle = await followHash()
-
-let txt = document.getElementById("txt")!
 
 function setupView() {
 	return new EditorView({
