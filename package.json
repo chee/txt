@@ -20,6 +20,7 @@
 		"@automerge/automerge-repo-network-messagechannel": "^1.2.1",
 		"@automerge/automerge-repo-network-websocket": "^1.2.1",
 		"@automerge/automerge-repo-storage-indexeddb": "^1.2.1",
+		"@codemirror/commands": "^6.6.0",
 		"@codemirror/lang-cpp": "^6.0.2",
 		"@codemirror/lang-css": "^6.2.1",
 		"@codemirror/lang-go": "^6.0.1",

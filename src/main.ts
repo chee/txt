@@ -9,6 +9,7 @@ import {automergeSyncPlugin} from "@automerge/automerge-codemirror"
 import {
 	Decoration,
 	EditorView,
+	keymap,
 	type DecorationSet,
 	type ViewUpdate,
 } from "@codemirror/view"
@@ -20,7 +21,7 @@ import {BroadcastChannelNetworkAdapter} from "@automerge/automerge-repo-network-
 import {IndexedDBStorageAdapter} from "@automerge/automerge-repo-storage-indexeddb"
 import {Repo} from "@automerge/automerge-repo"
 import {LanguageDescription} from "@codemirror/language"
-import {Tooltip, showTooltip} from "@codemirror/view"
+import {indentWithTab} from "@codemirror/commands"
 import {StateField, EditorState} from "@codemirror/state"
 
 let txt = document.getElementById("txt")!
@@ -287,6 +288,12 @@ function setupView() {
 				],
 			}),
 			dracula,
+			EditorView.contentAttributes.of({
+				autocorrect: "on",
+				autocapitalize: "on",
+				spellcheck: "true",
+			}),
+			keymap.of([indentWithTab]),
 		],
 		parent: txt,
 	})
