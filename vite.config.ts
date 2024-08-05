@@ -28,6 +28,7 @@ export const config: UserConfig = {
 				clientsClaim: true,
 				maximumFileSizeToCacheInBytes: 999999999999999,
 				additionalManifestEntries: [],
+				skipWaiting: true,
 			},
 			devOptions: {
 				enabled: true,

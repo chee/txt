@@ -12,6 +12,9 @@ await hash.ready
 async function updateHTML() {
 	element.innerHTML = await marked.parse(hash.docHandle!.docSync()!.text)
 	let nodes = Array.from(document.body.querySelectorAll("code"))
+	element.firstElementChild &&
+		(document.head.querySelector("title")!.textContent =
+			element.firstElementChild.textContent + " | html")
 
 	for (const node of nodes) {
 		let className = Array.from(node.classList).find(function (d) {

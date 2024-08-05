@@ -173,6 +173,15 @@ function onschemechange(event: MediaQueryListEvent) {
 }
 darkmatch.addEventListener("change", onschemechange)
 
+function title(update: ViewUpdate) {
+	if (update.docChanged) {
+		let headline = update.view.state.doc.line(1).text.replace(/^#+ /, "")
+		window.top &&
+			(window.top.document.head.querySelector("title")!.textContent =
+				headline + " | txt")
+	}
+}
+
 function setupView() {
 	return new EditorView({
 		doc: hash.docHandle!.docSync()!.text,
@@ -180,6 +189,7 @@ function setupView() {
 			theme.of(getSchemeTheme()),
 			EditorView.lineWrapping,
 			EditorView.updateListener.of(ephemera),
+			EditorView.updateListener.of(title),
 			cursors(),
 			minimalSetup,
 			automergeSyncPlugin({
@@ -281,6 +291,11 @@ function setupView() {
 }
 
 let view = setupView()
+let headline = view.state.doc.line(1).text.replace(/^#+ /, "")
+window.top &&
+	(window.top.document.head.querySelector("title")!.textContent =
+		headline + " | txt")
+
 hash.sub(() => {
 	view.destroy()
 	view = setupView()

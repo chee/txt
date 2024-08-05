@@ -5,7 +5,7 @@ import {IndexedDBStorageAdapter} from "@automerge/automerge-repo-storage-indexed
 import {Repo} from "@automerge/automerge-repo"
 
 export default async function startAutomerge() {
-	let idb = new IndexedDBStorageAdapter("lb-docs")
+	let idb = new IndexedDBStorageAdapter("txt")
 	let socky = new BrowserWebSocketClientAdapter(
 		`wss://autosync-rdd6.onrender.com`
 	)
