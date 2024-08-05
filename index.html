@@ -8,6 +8,8 @@
 			color: white;
 			height: 100%;
 			overscroll-behavior: none;
+			--friend-cursor-fill: yellow;
+			--friend-cursor-line: black;
 		}
 		body {
 			display: flex;
@@ -26,6 +28,17 @@
 		}
 		.cm-editor {
   			flex: 1;
+		}
+		.cm-friend {
+			background: #33ffee66
+		}
+		.cm-friend-point {
+			width: 2px;
+			height: 1.2em;
+			display: inline-block;
+			position: absolute;
+			margin-bottom: -2px;
+			background: #33ffee99;
 		}
 	</style>
 	<link rel=icon type=image/svg+xml href=/favicon.ico>
