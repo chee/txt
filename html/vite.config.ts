@@ -1,7 +1,6 @@
 import {defineConfig, type UserConfig} from "vite"
 import {VitePWA as pwa} from "vite-plugin-pwa"
 import wasm from "vite-plugin-wasm"
-import * as path from "path"
 
 export const config: UserConfig = {
 	plugins: [
@@ -14,13 +13,13 @@ export const config: UserConfig = {
 				config: true,
 			},
 			manifest: {
-				name: "txt",
-				short_name: "txt",
-				description: "a text file",
-				theme_color: "#282a36",
+				name: "html",
+				short_name: "html",
+				description: "an html file",
+				theme_color: "#000000",
 				// todo back and forward buttons
 				display: "fullscreen",
-				background_color: "#282a36",
+				background_color: "#ffffff",
 			},
 			workbox: {
 				globPatterns: ["**/*.{js,css,html,svg,png,ico,wasm}"],
@@ -43,12 +42,6 @@ export const config: UserConfig = {
 		sourcemap: "hidden",
 		minify: true,
 		target: ["firefox127", "safari17"],
-		rollupOptions: {
-			input: {
-				main: path.resolve(import.meta.dirname, "index.html"),
-				html: path.resolve(import.meta.dirname, "html/index.html"),
-			},
-		},
 	},
 	css: {
 		preprocessorOptions: {

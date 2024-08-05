@@ -14,8 +14,9 @@
 		"resolveJsonModule": true,
 		"skipLibCheck": true,
 		"strict": true,
-		"target": "ESNext"
+		"target": "ESNext",
+		"baseUrl": "src"
 	},
-	"include": ["src", "global.d.ts"],
+	"include": ["src", "global.d.ts", "html/src"],
 	"references": [{"path": "./tsconfig.node.json"}]
 }

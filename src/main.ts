@@ -1,10 +1,5 @@
 import {registerSW} from "virtual:pwa-register"
 registerSW({immediate: true})
-import {
-	isValidAutomergeUrl,
-	type AutomergeUrl,
-	type PeerId,
-} from "@automerge/automerge-repo/slim"
 import {automergeSyncPlugin} from "@automerge/automerge-codemirror"
 import {
 	Decoration,
@@ -16,13 +11,11 @@ import {
 import {minimalSetup} from "codemirror"
 import {markdown} from "@codemirror/lang-markdown"
 import {dracula} from "@uiw/codemirror-theme-dracula"
-import {BrowserWebSocketClientAdapter} from "@automerge/automerge-repo-network-websocket"
-import {BroadcastChannelNetworkAdapter} from "@automerge/automerge-repo-network-broadcastchannel"
-import {IndexedDBStorageAdapter} from "@automerge/automerge-repo-storage-indexeddb"
-import {Repo} from "@automerge/automerge-repo"
 import {LanguageDescription} from "@codemirror/language"
 import {indentWithTab} from "@codemirror/commands"
 import {StateField, EditorState} from "@codemirror/state"
+import HashFollower from "./follow.ts"
+import startAutomerge from "./start.ts"
 
 let txt = document.getElementById("txt")!
 
@@ -40,35 +33,10 @@ if (featureflags.has("name")) {
 	localStorage.setItem("name", featureflags.get("name") ?? "")
 }
 
-let idb = new IndexedDBStorageAdapter("lb-docs")
-let socky = new BrowserWebSocketClientAdapter(
-	`wss://autosync-rdd6.onrender.com`
-)
+let repo = await startAutomerge()
 
-let tabby = new BroadcastChannelNetworkAdapter()
-let network = [socky, tabby]
-let storage = idb
-let repo = new Repo({
-	network,
-	storage,
-	peerId: (localStorage.getItem("name") as PeerId) ?? undefined,
-})
-await new Promise<void>(yay => repo.networkSubsystem.once("ready", yay))
-
-async function followHash() {
-	let docUrl = location.hash.slice(1) as AutomergeUrl
-	if (!docUrl || !isValidAutomergeUrl(docUrl)) {
-		docUrl = repo.create({text: ""}).url
-		location.hash = docUrl
-	}
-
-	let docHandle = repo.find<{text: string}>(docUrl)
-	await docHandle.whenReady()
-
-	return docHandle
-}
-
-let docHandle = await followHash()
+let hash = new HashFollower(repo)
+await hash.ready
 
 type Range = {
 	from: number
@@ -83,7 +51,7 @@ type AnyMessage = RangeMessage | HelloMessage
 
 function broadcast(state: EditorState) {
 	for (let range of state.selection.ranges) {
-		docHandle.broadcast({
+		hash.docHandle?.broadcast({
 			$type: "range",
 			from: range.from,
 			to: range.to,
@@ -137,7 +105,7 @@ function cursors() {
 
 	return StateField.define<DecorationSet>({
 		create(state) {
-			docHandle.on("ephemeral-message", payload => {
+			hash.docHandle?.on("ephemeral-message", payload => {
 				let id = payload.senderId
 				let message = payload.message as AnyMessage
 				if (message.$type == "range") {
@@ -150,7 +118,7 @@ function cursors() {
 					broadcast(state)
 				}
 			})
-			docHandle.broadcast({type: "$hello"})
+			hash.docHandle?.broadcast({type: "$hello"})
 			return Decoration.none
 		},
 
@@ -195,14 +163,14 @@ function cursors() {
 
 function setupView() {
 	return new EditorView({
-		doc: docHandle.docSync()!.text,
+		doc: hash.docHandle!.docSync()!.text,
 		extensions: [
 			EditorView.lineWrapping,
 			EditorView.updateListener.of(ephemera),
 			cursors(),
 			minimalSetup,
 			automergeSyncPlugin({
-				handle: docHandle,
+				handle: hash.docHandle!,
 				path: ["text"],
 			}),
 			markdown({
@@ -300,18 +268,16 @@ function setupView() {
 }
 
 let view = setupView()
+hash.sub(() => {
+	view.destroy()
+	view = setupView()
+})
 
 setInterval(() => {
 	broadcast(view.state)
 }, 1000)
 
 view.focus()
-
-window.addEventListener("hashchange", async () => {
-	docHandle = await followHash()
-	view.destroy()
-	view = setupView()
-})
 
 window.repo = repo
 
