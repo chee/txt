@@ -13,9 +13,10 @@ import {markdown} from "@codemirror/lang-markdown"
 import {dracula} from "@uiw/codemirror-theme-dracula"
 import {LanguageDescription} from "@codemirror/language"
 import {indentWithTab} from "@codemirror/commands"
-import {StateField, EditorState} from "@codemirror/state"
+import {StateField, EditorState, Compartment} from "@codemirror/state"
 import HashFollower from "./follow.ts"
 import startAutomerge from "./start.ts"
+import {githubLight as github} from "@uiw/codemirror-theme-github"
 
 let txt = document.getElementById("txt")!
 
@@ -160,10 +161,23 @@ function cursors() {
 	})
 }
 
+let darkmatch = window.matchMedia("(prefers-color-scheme: dark)")
+let theme = new Compartment()
+function getSchemeTheme() {
+	return darkmatch.matches ? dracula : github
+}
+function onschemechange(event: MediaQueryListEvent) {
+	view?.dispatch({
+		effects: theme.reconfigure(getSchemeTheme()),
+	})
+}
+darkmatch.addEventListener("change", onschemechange)
+
 function setupView() {
 	return new EditorView({
 		doc: hash.docHandle!.docSync()!.text,
 		extensions: [
+			theme.of(getSchemeTheme()),
 			EditorView.lineWrapping,
 			EditorView.updateListener.of(ephemera),
 			cursors(),

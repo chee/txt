@@ -8,8 +8,7 @@
 			color: white;
 			height: 100%;
 			overscroll-behavior: none;
-			--friend-cursor-fill: yellow;
-			--friend-cursor-line: black;
+
 		}
 		body {
 			display: flex;
@@ -24,6 +23,9 @@
 			font-size: 1.2em;
 		}
 		.cm-cursor-primary {
+			border-left: 2px solid #000!important;
+		}
+		@media (prefers-dark-mode: dark) {
 			border-left: 2px solid #33ffee!important;
 		}
 		.cm-editor {
