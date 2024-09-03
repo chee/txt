@@ -4,8 +4,8 @@
 	<title>txt</title>
 	<style>
 		html {
-			background: #282a36;
-			color: white;
+			background: white;
+			color: black;
 			height: 100%;
 			overscroll-behavior: none;
 
@@ -21,15 +21,26 @@
 			flex-direction: column;
 			flex-grow: 1;
 			font-size: 1.2em;
+
 		}
 		.cm-cursor-primary {
-			border-left: 2px solid #000!important;
+			border-left: 2px solid #033!important;
+		}
+		.cm-activeLine {
+			background: #33ffee01!important;
 		}
 		@media (prefers-dark-mode: dark) {
-			border-left: 2px solid #33ffee!important;
+			body {
+				background: black;
+				color: white;
+			}
+			.cm-cursor-primary {
+				border-left: 2px solid #33ffee!important;
+			}
 		}
 		.cm-editor {
   			flex: 1;
+
 		}
 		.cm-friend {
 			background: #33ffee66
@@ -41,6 +52,10 @@
 			position: absolute;
 			margin-bottom: -2px;
 			background: #33ffee99;
+		}
+		[mono] * {
+			font-family: iosevka, monospace !important;
+			font-size: 1em!important;
 		}
 	</style>
 	<link rel=icon type=image/svg+xml href=/favicon.ico>
