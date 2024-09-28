@@ -6,9 +6,7 @@ import {Repo} from "@automerge/automerge-repo"
 
 export default async function startAutomerge() {
 	let idb = new IndexedDBStorageAdapter("txt")
-	let socky = new BrowserWebSocketClientAdapter(
-		`wss://autosync-rdd6.onrender.com`
-	)
+	let socky = new BrowserWebSocketClientAdapter(`wss://galaxy.observer`)
 	let tabby = new BroadcastChannelNetworkAdapter()
 	let network = [socky, tabby]
 	let storage = idb
